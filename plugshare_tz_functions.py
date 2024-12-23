@@ -68,21 +68,20 @@ def get_tz_plugshare(timezone, timezone_info, filepath):
 
     #IMPORTANT: change line 70 if you need to direct to a different filepath
     # file = open('Summer24_' + str(timezone) + '.txt', mode= 'r')
-    file = open('/Users/angelinaxu/Desktop/EV_Charging/Summer24_ID_Lists/summer_ids_unrestricted_nodealers_reruns.txt', mode='r')
-    # file = open('/Users/angelinaxu/Desktop/EV_Charging/Summer24_ID_Lists/TEST_STATIONS.txt', mode='r')
+    
+    file = open('/Users/salataintern/Desktop/EV-Charging/Summer24_ID_Lists/summer_ids_unrestricted_nodealers.txt', mode='r')
     location_ids = file.readlines()
     count = 0
     browser = None
 
     for location in location_ids:
         try:
-            if count % 50 == 0:
+            if count % 100 == 0:
                 if browser:
                     browser.quit()
                 browser = webdriver.Chrome(options=chrome_options)
             if not browser:
                 browser = webdriver.Chrome(options=chrome_options)
-            # browser = webdriver.Chrome(options=chrome_options)
             browser.get("https://www.plugshare.com/location/" + location.strip()[:-4])
             #browser.get("https://www.plugshare.com/location/"+ location)
             time.sleep(1)
@@ -287,10 +286,10 @@ def get_tz_plugshare(timezone, timezone_info, filepath):
 
         station_data = pd.DataFrame([info])
         if count == 0:
-            station_data.to_csv('{}/EV_Charging/raw_data_runs/'.format(filepath) + str(timezone) + '_plugshare_scrape_' + str(date.today()) + '_' + time_of_day + '.csv')
+            station_data.to_csv('{}/raw_data_runs/'.format(filepath) + str(timezone) + '_plugshare_scrape_' + str(date.today()) + '_' + time_of_day + '.csv')
             count += 1
         else:
-            station_data.to_csv('{}/EV_Charging/raw_data_runs/'.format(filepath) + str(timezone) + '_plugshare_scrape_' + str(date.today()) + '_' + time_of_day + '.csv', mode='a', header=False)
+            station_data.to_csv('{}/raw_data_runs/'.format(filepath) + str(timezone) + '_plugshare_scrape_' + str(date.today()) + '_' + time_of_day + '.csv', mode='a', header=False)
             count += 1
         print(count)
         print("timezone run: successfully gathered info for site " + location)
